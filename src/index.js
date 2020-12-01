@@ -1,12 +1,20 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux'
-import { createStore } from 'redux'
+import { createStore, applyMiddleware } from 'redux'
+import createSagaMiddleware from 'redux-saga'
 import * as serviceWorker from './serviceWorker';
 import Router from './router'
 import {counter} from './redux/reducers'
+import mySaga from './sagas'
 
-let store = createStore(counter,window.__REDUX_DEVTOOLS_EXTENSION__())
+const sagaMiddleware = createSagaMiddleware()
+
+let store = createStore(counter,
+	applyMiddleware(sagaMiddleware)
+)
+
+sagaMiddleware.run(mySaga)
 
 ReactDOM.render(
 	 <Provider store={store}>
